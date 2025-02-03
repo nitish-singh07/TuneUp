@@ -5,7 +5,7 @@ const usernameSchema = zod.string();
 const emailSchema = zod.string().email();
 const passwordSchema = zod.string().min(6);
 
-const signup = async function (req, res) {
+const signUp = async function (req, res) {
   const { username, email, password } = req.body;
 
   const reponseUsername = usernameSchema.safeParse(username);
@@ -41,4 +41,4 @@ const signup = async function (req, res) {
   return res.status(201).json({ message: "User registered successfully!" });
 };
 
-export default signup;
+export default signUp;
