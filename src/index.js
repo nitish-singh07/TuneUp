@@ -1,16 +1,18 @@
 import express from "express";
 import dotenv from "dotenv";
-import userRoutes from "./routes/user.routes.js";
+import router from "./routes/user.routes.js";
+import connectDB from "./config/db.js";
 
 dotenv.config();
 
 const app = express();
 
+connectDB();
 // Middleware to parse JSON bodies
 app.use(express.json());
 
 // Use user routes under "/api" path
-app.use("/api", userRoutes);
+app.use("/api", router);
 
 // Root route to send a message
 app.get("/", (req, res) => {

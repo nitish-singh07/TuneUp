@@ -1,30 +1,44 @@
 import zod from "zod";
 import User from "../models/user.models.js";
 
-const usernameSchema = zod.string().email();
+const usernameSchema = zod.string();
+const emailSchema = zod.string().email();
 const passwordSchema = zod.string().min(6);
 
 const signup = async function (req, res) {
   const { username, email, password } = req.body;
 
-  const reponseUsername = username.safeParse(username);
-  const reponseEmail = username.safeParse(email);
-  const reponsePassword = username.safeParse(password);
+  const reponseUsername = usernameSchema.safeParse(username);
+  const reponseEmail = emailSchema.safeParse(email);
+  const reponsePassword = passwordSchema.safeParse(password);
 
-  if (!reponsEmail.sucess || !reponseUsername.sucess || !reponsePassword) {
-    res.json({ message: "invalid inputs " });
+  if (!reponseEmail.success) {
+    return res.status(400).json({ message: "email in valid  " });
+  }
+  if (!reponseUsername.success) {
+    console.log(reponseUsername);
+
+    return res.status(400).json({ message: "invalid username" });
+  }
+  if (!reponsePassword) {
+    return res.status(400).json({ message: "week password" });
   }
 
   const existingEmail = await User.findOne({ email });
+
   if (existingEmail) {
-    res.json({ message: "email already used" });
+    return res.status(400).json({ message: "Email already used" });
   }
   const existingUsername = await User.findOne({ username });
   if (existingUsername) {
-    res.json({ message: "user already taken" });
+    return res.status(400).json({ message: "user already taken" });
   }
 
   const newUser = new User({ username, email, password });
+
+  await newUser.save();
+
+  return res.status(201).json({ message: "User registered successfully!" });
 };
 
 export default signup;
