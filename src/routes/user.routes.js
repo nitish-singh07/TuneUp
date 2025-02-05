@@ -15,11 +15,11 @@ import {
 
 const router = express.Router();
 
-// Auth routes
+// Public routes (no auth required)
 router.post("/signUp", signUp);
 router.post("/signIn", signIn);
 
-// Protected routes
+// Protected routes (auth required)
 router.use(authmiddleware);
 router.post("/createRoom", createRoom);
 router.post("/joinRoom", joinRoom);
