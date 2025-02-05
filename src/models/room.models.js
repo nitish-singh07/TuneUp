@@ -6,6 +6,15 @@ const RoomSchema = new mongoose.Schema({
   host: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   musicQueue: [{ type: mongoose.Schema.Types.ObjectId, ref: "Music" }],
+  currentlyPlaying: { type: mongoose.Schema.Types.ObjectId, ref: "Music" },
+  isActive: { type: Boolean, default: true },
+  playHistory: [
+    {
+      music: { type: mongoose.Schema.Types.ObjectId, ref: "Music" },
+      playedAt: { type: Date, default: Date.now },
+      votesReceived: { type: Number, default: 0 },
+    },
+  ],
   createdAt: { type: Date, default: Date.now },
 });
 
